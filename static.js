@@ -9,6 +9,18 @@ const idToColor = (id) => {
   return colors[uuidIntIsh % colors.length]
 }
 
+
+  // output is an array of 
+  /* 
+    Array<{
+      type: "Geography" | "Policy", 
+      id: uuid,
+      data: {
+        url: <static mapbox url>, 
+        urlLength: int
+      }
+    }>
+  */
 module.exports = (results, response) => {
   const TOKEN = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
 
@@ -83,10 +95,10 @@ module.exports = (results, response) => {
   // imageUrls.forEach(image => open(image))
 
   return [
-    geoUrls.map((geo) => ({...geo, type: "Geography"})), 
+    geoUrls.map((geo) => ({...geo, type: "Geography"})),  // just some types for debugging
     policyUrls.map((policy) => ({...policy, type: "Policy"}))
   ].flat().map(({data, ...rest}) => ({
     data: {url: data, urlLength: data.length},
     ...rest
-  }))
+  })) 
 }
