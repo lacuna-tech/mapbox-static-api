@@ -1,0 +1,24 @@
+{
+  "name": "geojsonreduce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start:index": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mapbox/geojson-tidy": "^1.0.1",
+    "@mapbox/mapbox-sdk": "^0.13.2",
+    "geojson-precision": "^1.0.0",
+    "geojson-tools": "^0.2.2",
+    "open": "^8.4.0",
+    "openn": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
