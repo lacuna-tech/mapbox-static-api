@@ -1,5 +1,5 @@
-const open = require('open')
 const fs = require('fs')
+const https = require('https')
 
 const reduce = require('./reduce')
 const static = require('./static')
@@ -36,12 +36,20 @@ const main = () => {
   // fs.writeFileSync('./output/results.json', JSON.stringify(results,null,2))
   const images = static(results, response)
 
-  for (const image of images) {
-    console.log(JSON.stringify(image,null,4))
-    open(image.data.url) // <-- popping image open in your browser, super annoying, write to /output the images?
-  }
   console.timeEnd('time')
 
+  //write results to json so you can find urls individually and stuff
   fs.writeFileSync('./output/results.json', JSON.stringify(results,null,2))
+
+  // write images to ./output
+  for (const image of images) {
+    const imageName = `./output/${image.type}-${image.id}.jpg`
+    console.log('writing image ', imageName, 'url length is', image.data.urlLength)
+    const file = fs.createWriteStream(imageName)
+    https.get(image.data.url, function(response) {
+      response.pipe(file);
+    });
+
+  }
 }
 main()

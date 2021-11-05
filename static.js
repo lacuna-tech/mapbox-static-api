@@ -86,7 +86,7 @@ module.exports = (results, response) => {
     geoUrls.map((geo) => ({...geo, type: "Geography"})), 
     policyUrls.map((policy) => ({...policy, type: "Policy"}))
   ].flat().map(({data, ...rest}) => ({
-    data: {url: data, length: data.length},
+    data: {url: data, urlLength: data.length},
     ...rest
   }))
 }
