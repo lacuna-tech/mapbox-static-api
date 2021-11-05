@@ -1,4 +1,3 @@
-const fs = require('fs')
 const gp = require('geojson-precision')
 const geojsonTidy = require('@mapbox/geojson-tidy')
 const geojsonTools = require('geojson-tools')
@@ -22,14 +21,7 @@ const toArray = (feature) => {
   throw new Error("not sure what type of thing this is", feature)
 }
 
-module.exports = (decimalPrecision, tidyOptions) => {
-  // const decimalPrecision = 7
-  // const tidyOptions = {
-  //   minimumDistance: 50, // Minimum distance between points in metres
-  //   maximumPoints: 35   // Maximum points in a feature  
-  // }
-
-  const response = JSON.parse(fs.readFileSync('./input/response.json', {encoding: 'utf-8'}))
+module.exports = (response, decimalPrecision, tidyOptions) => {
   const nestedGeos = response.data.policies.data.map(policy => 
     policy.rules.map(rule => rule.geographies.map(geography => ({
             data: geography.geography_json,
@@ -96,5 +88,6 @@ const results = [...geographies
     data: geojsonTidy.tidy(data, tidyOptions),
     ...rest
   }))
-  fs.writeFileSync('./output/results.json', JSON.stringify(results,null,2), {encoding: 'utf-8'})
+
+  return results
 }

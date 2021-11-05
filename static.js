@@ -9,12 +9,12 @@ const idToColor = (id) => {
   return colors[uuidIntIsh % colors.length]
 }
 
-module.exports = () => {
+module.exports = (results, response) => {
   const TOKEN = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
 
   const staticClient = mbxStatic({ accessToken: TOKEN})
 
-  const geoOverlays = JSON.parse(fs.readFileSync('./output/results.json', {encoding: 'utf-8'}))
+  const geoOverlays = results
     .map(({id, data, ...rest}) => {
       const color = idToColor(id)
       return {
@@ -57,7 +57,7 @@ module.exports = () => {
   //   open(geoUrl.data)
   // }
 
-  const policies = JSON.parse(fs.readFileSync('./input/response.json', {encoding: 'utf-8'})).data.policies.data
+  const policies = response.data.policies.data
 
   // TODO this geoegraphies are invalid somehow, rendering them messes up the static image url
   const badGeos = new Set(['b9aeec53-625d-4bfc-a9fd-debd07f24152', '70edd951-3988-4a9e-9306-ff90ece3345f'])
