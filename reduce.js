@@ -32,7 +32,7 @@ module.exports = (response, decimalPrecision, tidyOptions) => {
     )
   )
 
-const geographies = nestedGeos.flat(2)
+const geographies = nestedGeos.flat(2) // all geographies nested in the policies
 
 const results = [...geographies
     .reduce((acc, cur) => {
@@ -40,19 +40,19 @@ const results = [...geographies
       return acc
     }, new Map())
     .values()
-  ]
+  ] // removed duplicate geographies
   .map(({data, ...rest}) => ({
     data: toArray(data),
     ...rest
-  }))
+  })) // turned wild geography_json GeoJSON into arrays of coordinates
   .map(({data, ...rest}) => ({
-    data: geojsonTools.toGeoJSON(data[0], 'linestring'), // only data[0]?
+    data: geojsonTools.toGeoJSON(data[0], 'linestring'), // only data[0]?  I need to double check this....
     ...rest
-  }))
+  })) // turned coordinate arrays into "linestring" features because "@mapbox/geojson-tidy" package needs LineStrings, and LineStrings are probably better for url params
   .map(({data, ...rest}) => ({
     data: gp({...data}, decimalPrecision),
     ...rest
-  }))
+  })) // decimal precision, removes decimal precision from coordinates lat lngs, using "geojson-precision"
   .map(({data, ...rest}) => {
     const coordinates = data.coordinates
     
@@ -63,14 +63,14 @@ const results = [...geographies
       coordinates.push(first)
     }
 
-    return {
+    return { 
       data: {
         ...data,
         coordinates: coordinates
       },
       ...rest  
     }
-  })
+  }) // making sure all lines start and end at the same point, - should prob be moved until after tidy?
   .map(({data, ...rest}) => ({
     data: {
       type: "FeatureCollection",
@@ -83,11 +83,11 @@ const results = [...geographies
       }]
     },
     ...rest
-  }))
+  })) // formatting for "tidy"
   .map(({data, ...rest}) => ({
     data: geojsonTidy.tidy(data, tidyOptions),
     ...rest
-  }))
+  })) // tidied linestring features!
 
   return results
 }
