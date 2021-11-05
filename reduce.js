@@ -2,6 +2,7 @@ const gp = require('geojson-precision')
 const geojsonTidy = require('@mapbox/geojson-tidy')
 const geojsonTools = require('geojson-tools')
 
+// take some feature, turn it into a coordinate array... 
 const toArray = (feature) => {
   switch (feature.type) {
     case "FeatureCollection": 
@@ -13,8 +14,8 @@ const toArray = (feature) => {
         case "LineString":
         case "Point":
           return geojsonTools.toArray(geometry)
-        default:
-          console.error('what is this type', geometry)
+        default: // seing some geometry.type = "Multiline" geometry types in here, might need to double check
+          console.error(`Unexpected geometry type ${geometry?.type}`, geometry)
           return geojsonTools.toArray(geometry)
       }
   }

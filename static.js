@@ -64,7 +64,7 @@ module.exports = (results, response) => {
 
   const policyUrls = policies.map(({policy_id, rules}) => {
     const uniqueGeoIds = [...new Set(rules.map(({geographies}) => geographies.map(({geography_id}) => geography_id)).flat())]
-      .filter(geoId => !badGeos.has(geoId))
+      .filter(geoId => !badGeos.has(geoId)) // TODO filtering out "BAD GEOS" from the composite, just to see if stuff works...
     console.log('geos', uniqueGeoIds)
     const overlays = uniqueGeoIds.map(geoId => geoOverlays.get(geoId).data.overlays).reduce((acc, cur) => acc.concat(cur), [])
     return {
