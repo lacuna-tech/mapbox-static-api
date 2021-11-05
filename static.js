@@ -44,8 +44,8 @@ module.exports = () => {
       data: staticClient.getStaticImage({
         ownerId: 'mapbox',
         styleId: 'light-v9',
-        width: 300,
-        height: 300,
+        width: 393,
+        height: 139,
         position: 'auto',
         overlays: data.overlays
       }).url(),
@@ -71,8 +71,8 @@ module.exports = () => {
       data: staticClient.getStaticImage({
         ownerId: 'mapbox',
         styleId: 'light-v9',
-        width: 300,
-        height: 300,
+        width: 393,
+        height: 139,
         position: 'auto',
         overlays
       }).url(),

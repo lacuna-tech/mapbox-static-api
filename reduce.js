@@ -61,6 +61,24 @@ const results = [...geographies
     data: gp({...data}, decimalPrecision),
     ...rest
   }))
+  .map(({data, ...rest}) => {
+    const coordinates = data.coordinates
+    
+    const first = coordinates[0]
+    const last = coordinates[coordinates.length - 1]
+
+    if (first[0] != last[0] && first[1] != last[1]) { // polygons must wrap
+      coordinates.push(first)
+    }
+
+    return {
+      data: {
+        ...data,
+        coordinates: coordinates
+      },
+      ...rest  
+    }
+  })
   .map(({data, ...rest}) => ({
     data: {
       type: "FeatureCollection",
