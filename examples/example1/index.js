@@ -20,10 +20,16 @@ const main = () => {
     }, new Map()).values()]
   }))
 
+  //temp inspecting some bad geos
+  // const limitToGeos = new Set(['b9aeec53-625d-4bfc-a9fd-debd07f24152', '70edd951-3988-4a9e-9306-ff90ece3345f'])
+
+  const limitToGeos = new Set(['b9aeec53-625d-4bfc-a9fd-debd07f24152', '0c553a45-398b-4f36-8046-15fe59f0f8ed'])
   const allGeographies = [...policies.map(({geographies}) => geographies).flat().reduce((acc, geo) => {
     acc.set(geo.geography_id, geo)
     return acc
-  }, new Map()).values()]
+  }, new Map())
+    .values()]
+    // .filter(({geography_id}) => limitToGeos.has(geography_id))
 
   const ALL_GEOGRAPHIES_PATH = './output/geographies.json'
   console.log('writing to', ALL_GEOGRAPHIES_PATH)

@@ -14,6 +14,8 @@ const toArray = (feature) => {
         case "LineString":
         case "Point":
           return geojsonTools.toArray(geometry)
+        case 'MultiPolygon':
+          return geojsonTools.toArray(geometry).flat()
         default: // seing some geometry.type = "Multiline" geometry types in here, might need to double check
           console.error(`Unexpected geometry type ${geometry?.type}`, geometry)
           return geojsonTools.toArray(geometry)
@@ -43,7 +45,7 @@ const results = [...geographies
     .values()
   ] // removed duplicate geographies
   .map(({geography_json, ...rest}) => ({
-    data: toArray(geography_json),
+    data: toArray(geography_json), // [[lat,lng]] | [[[lat, lng]]]
     ...rest
   })) // turned wild geography_json GeoJSON into arrays of coordinates
   .map(({data, ...rest}) => ({
@@ -54,24 +56,24 @@ const results = [...geographies
     data: gp({...data}, decimalPrecision),
     ...rest
   })) // decimal precision, removes decimal precision from coordinates lat lngs, using "geojson-precision"
-  .map(({data, ...rest}) => {
-    const coordinates = data.coordinates
+  // .map(({data, ...rest}) => {
+  //   const coordinates = data.coordinates
     
-    const first = coordinates[0]
-    const last = coordinates[coordinates.length - 1]
+  //   const first = coordinates[0]
+  //   const last = coordinates[coordinates.length - 1]
 
-    if (first[0] != last[0] && first[1] != last[1]) { // polygons must wrap
-      coordinates.push(first)
-    }
+  //   if (first[0] != last[0] && first[1] != last[1]) { // polygons must wrap
+  //     coordinates.push(first)
+  //   }
 
-    return { 
-      data: {
-        ...data,
-        coordinates: coordinates
-      },
-      ...rest  
-    }
-  }) // making sure all lines start and end at the same point, - should prob be moved until after tidy?
+  //   return { 
+  //     data: {
+  //       ...data,
+  //       coordinates: coordinates
+  //     },
+  //     ...rest  
+  //   }
+  // }) // making sure all lines start and end at the same point, - should prob be moved until after tidy?
   .map(({data, ...rest}) => ({
     data: {
       type: "FeatureCollection",
