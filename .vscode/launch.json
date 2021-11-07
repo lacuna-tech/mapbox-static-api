@@ -12,7 +12,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/static.js"
+      "program": "${workspaceFolder}/src/static.js"
     },
     {
       "type": "pwa-node",
@@ -21,7 +21,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/index.js"
+      "program": "${workspaceFolder}/src/index.js"
     }
   ]
 }

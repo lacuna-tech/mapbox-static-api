@@ -9,6 +9,7 @@
             {
               "geographies": [
                 {
+                  "color": "#DE5285",
                   "geography_id": "b68f5ddd-a4a2-40cb-bbd9-91308020a010",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -2488,6 +2489,7 @@
                   }
                 },
                 {
+                  "color": "#79443B",
                   "geography_id": "47d67028-180a-47ac-91e6-f919a4e8ee0a",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -2635,6 +2637,7 @@
             {
               "geographies": [
                 {
+                  "color": "#4A646C",
                   "geography_id": "e26768d2-fe9b-4fde-837b-2caa2acc8218",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -2814,6 +2817,7 @@
             {
               "geographies": [
                 {
+                  "color": "#ACE5EE",
                   "geography_id": "27c48f90-3954-43aa-af68-e32ff98c0e89",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -3197,6 +3201,7 @@
             {
               "geographies": [
                 {
+                  "color": "#4D5D53",
                   "geography_id": "b9aeec53-625d-4bfc-a9fd-debd07f24152",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -24626,6 +24631,7 @@
             {
               "geographies": [
                 {
+                  "color": "#FF1493",
                   "geography_id": "2177e662-f49d-47de-b431-b4e016e0bcbc",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -34805,6 +34811,7 @@
             {
               "geographies": [
                 {
+                  "color": "#C46210",
                   "geography_id": "fcc7c3e3-49a9-4dbc-9ac5-8a90149631eb",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -38524,6 +38531,7 @@
             {
               "geographies": [
                 {
+                  "color": "#893F45",
                   "geography_id": "cdf61b3d-2937-44ef-9103-a1e8fde2446b",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -38859,6 +38867,7 @@
             {
               "geographies": [
                 {
+                  "color": "#72A0C1",
                   "geography_id": "4b886c2d-360f-4682-9be0-909c69fbf596",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -58234,6 +58243,7 @@
             {
               "geographies": [
                 {
+                  "color": "#7366BD",
                   "geography_id": "74894d67-e82e-422e-b1b8-a0c6b6ca6e4f",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -58469,6 +58479,7 @@
             {
               "geographies": [
                 {
+                  "color": "#7BB661",
                   "geography_id": "d12970c6-7b34-491f-aae6-23d3b2d9b1ca",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -59940,6 +59951,7 @@
             {
               "geographies": [
                 {
+                  "color": "#1B1811",
                   "geography_id": "70edd951-3988-4a9e-9306-ff90ece3345f",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -68173,6 +68185,7 @@
             {
               "geographies": [
                 {
+                  "color": "#614051",
                   "geography_id": "8dddb9be-d68c-4ca6-88db-0c4291ff7465",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -68292,6 +68305,7 @@
             {
               "geographies": [
                 {
+                  "color": "#E97451",
                   "geography_id": "b936a744-3a9c-450a-a22f-02f0b5b0e52b",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -69435,6 +69449,7 @@
                   }
                 },
                 {
+                  "color": "#E9D66B",
                   "geography_id": "e63989bb-b2b7-4e7e-a964-d806bee92bbe",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -69738,6 +69753,7 @@
                   }
                 },
                 {
+                  "color": "#F88379",
                   "geography_id": "3fcad00f-9ae4-45f6-ae1f-71d46b3b7247",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -75297,6 +75313,7 @@
             {
               "geographies": [
                 {
+                  "color": "#F88379",
                   "geography_id": "0038cc08-dd00-433c-aa7d-e42829aec348",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -75744,6 +75761,7 @@
             {
               "geographies": [
                 {
+                  "color": "#FF5470",
                   "geography_id": "dbfa15e2-df2f-42ca-9a5b-7b67e3ba8443",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -78271,6 +78289,7 @@
             {
               "geographies": [
                 {
+                  "color": "#AF6E4D",
                   "geography_id": "0c553a45-398b-4f36-8046-15fe59f0f8ed",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -78462,6 +78481,7 @@
             {
               "geographies": [
                 {
+                  "color": "#8F9779",
                   "geography_id": "aa378a48-a03f-4479-8c13-8fb71704abe1",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -82573,6 +82593,7 @@
             {
               "geographies": [
                 {
+                  "color": "#7FFF00",
                   "geography_id": "2428a9d0-29bd-4656-b850-989ea78323ad",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -84048,6 +84069,7 @@
             {
               "geographies": [
                 {
+                  "color": "#F64A8A",
                   "geography_id": "22b25aca-d35a-49a0-affa-a9fe8240ecc6",
                   "geography_json": {
                     "type": "FeatureCollection",
@@ -84279,6 +84301,7 @@
             {
               "geographies": [
                 {
+                  "color": "#E97451",
                   "geography_id": "b936a744-3a9c-450a-a22f-02f0b5b0e52b",
                   "geography_json": {
                     "type": "FeatureCollection",

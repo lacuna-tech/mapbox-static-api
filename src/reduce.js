@@ -22,28 +22,28 @@ const toArray = (feature) => {
   throw new Error("not sure what type of thing this is", feature)
 }
 
-module.exports = (response, decimalPrecision, tidyOptions) => {
-  const nestedGeos = response.data.policies.data.map(policy => 
-    policy.rules.map(rule => rule.geographies.map(geography => ({
-            data: geography.geography_json,
-            id: geography.geography_id
-          }
-        )
-      )
-    )
-  )
-
-const geographies = nestedGeos.flat(2) // all geographies nested in the policies
+module.exports = (geographies, options) => {
+  const { decimalPrecision, ...tidyOptions } = options
+// const nestedGeos = response.data.policies.data.map(policy => 
+//   policy.rules.map(rule => rule.geographies.map(({geography_json, geography_id, ...rest}) => ({
+//         data: geography_json,
+//         id: geography_id,
+//         ...rest
+//       })
+//     )
+//   )
+// )
+// const geographies = nestedGeos.flat(2) // all geographies nested in the policies
 
 const results = [...geographies
     .reduce((acc, cur) => {
-      acc.set(cur.id, cur)
+      acc.set(cur.geography_id, cur)
       return acc
     }, new Map())
     .values()
   ] // removed duplicate geographies
-  .map(({data, ...rest}) => ({
-    data: toArray(data),
+  .map(({geography_json, ...rest}) => ({
+    data: toArray(geography_json),
     ...rest
   })) // turned wild geography_json GeoJSON into arrays of coordinates
   .map(({data, ...rest}) => ({
