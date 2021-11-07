@@ -37,33 +37,4 @@ module.exports = (results, mapboxToken) => {
     position: 'auto',
     overlays
   }).url()
-
-  // console.log('geoOverlays', geoOverlays)
-
-  
-  // return geoOverlays.map(({data, ...rest}) => ({
-  //   url: staticClient.getStaticImage({
-  //       ownerId: 'mapbox',
-  //       styleId: 'light-v9',
-  //       width: 393,
-  //       height: 139,
-  //       position: 'auto',
-  //       overlays: data.overlays
-  //     }).url()
-  //   }
-  // ))
-
-  // return [...geoOverlays.values()].map(({data, ...rest}) => {
-  //   return {
-  //     data: staticClient.getStaticImage({
-  //       ownerId: 'mapbox',
-  //       styleId: 'light-v9',
-  //       width: 393,
-  //       height: 139,
-  //       position: 'auto',
-  //       overlays: data.overlays
-  //     }).url(),
-  //     ...rest
-  //   }
-  // })
 }
