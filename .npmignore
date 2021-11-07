@@ -1,0 +1,6 @@
+examples/
+images/
+node_modules/
+.gitignore
+.eslintrc.json
+pnpm-lock.yaml
