@@ -1,5 +1,4 @@
 examples/
-images/
 node_modules/
 .gitignore
 .eslintrc.json
