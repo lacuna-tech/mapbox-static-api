@@ -10,9 +10,17 @@ const saveImage = (fileName, url) => {
 }
 
 const main = () => {
+
+  try {
+    fs.accessSync('./output')
+  } catch (e) {
+    fs.mkdirSync('./output')
+  }
+
+
   const mapboxToken = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
-  const response = JSON.parse(fs.readFileSync('./input/responseProd.json', {encoding: 'utf-8'}))
-  const policies = response.data.policies.map(({rules, policy_id}) => ({
+  const response = JSON.parse(fs.readFileSync('./input/response.json', {encoding: 'utf-8'}))
+  const policies = response.data.policies.data.map(({rules, policy_id}) => ({
     policy_id, 
     geographies: [...rules.map(rule => rule.geographies).flat().reduce((acc, geo) => {
       acc.set(geo.geography_id, geo)
