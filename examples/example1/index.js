@@ -11,8 +11,8 @@ const saveImage = (fileName, url) => {
 
 const main = () => {
   const mapboxToken = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
-  const response = JSON.parse(fs.readFileSync('./input/response.json', {encoding: 'utf-8'}))
-  const policies = response.data.policies.data.map(({rules, policy_id}) => ({
+  const response = JSON.parse(fs.readFileSync('./input/responseProd.json', {encoding: 'utf-8'}))
+  const policies = response.data.policies.map(({rules, policy_id}) => ({
     policy_id, 
     geographies: [...rules.map(rule => rule.geographies).flat().reduce((acc, geo) => {
       acc.set(geo.geography_id, geo)
@@ -20,31 +20,29 @@ const main = () => {
     }, new Map()).values()]
   }))
 
-  //temp inspecting some bad geos
-  // const limitToGeos = new Set(['b9aeec53-625d-4bfc-a9fd-debd07f24152', '70edd951-3988-4a9e-9306-ff90ece3345f'])
-
-  const limitToGeos = new Set(['b9aeec53-625d-4bfc-a9fd-debd07f24152', '0c553a45-398b-4f36-8046-15fe59f0f8ed'])
   const allGeographies = [...policies.map(({geographies}) => geographies).flat().reduce((acc, geo) => {
     acc.set(geo.geography_id, geo)
     return acc
   }, new Map())
     .values()]
-    // .filter(({geography_id}) => limitToGeos.has(geography_id))
 
   const ALL_GEOGRAPHIES_PATH = './output/geographies.json'
   console.log('writing to', ALL_GEOGRAPHIES_PATH)
   fs.writeFileSync(ALL_GEOGRAPHIES_PATH, JSON.stringify(allGeographies, null, 2))
+
+  const options = {
+    decimalPrecision: 5,
+    minimumDistance: 15,
+    ramerDouglasPeukerThreshold: 0.001,
+    mapboxToken
+  }
 
   const data = [
     ...policies.map(({policy_id, geographies}) => {
 
       const TIME_TAG = `time policy ${policy_id}`
       console.time(TIME_TAG)
-      const url = getStaticUrl(geographies, {
-        decimalPrecision: 5,
-        minimumDistance: 75,
-        mapboxToken
-      })
+      const url = getStaticUrl(geographies, options)
       console.timeEnd(TIME_TAG)
 
       return {
@@ -54,11 +52,7 @@ const main = () => {
     }),
     ...allGeographies.map(geography => ({
       fileName: `Geography_${geography.geography_id}`, 
-      url: getStaticUrl([geography], {
-        decimalPrecision: 5,
-        minimumDistance: 75,
-        mapboxToken
-      })
+      url: getStaticUrl([geography], options)
     }))
   ]
 
@@ -72,6 +66,8 @@ const main = () => {
 
   const STATIC_URL_INFO_PATH = './output/static-url-info.json'
   console.log('writing static url info to', ALL_GEOGRAPHIES_PATH)
+  console.log('avg url length', staticUrlInfo.reduce((acc, cur) => acc + cur.urlLength, 0) / staticUrlInfo.length)
+  console.log('max url length', Math.max(...staticUrlInfo.map(({urlLength}) => urlLength)))
   fs.writeFileSync(STATIC_URL_INFO_PATH, JSON.stringify(staticUrlInfo, null, 2))
   
   console.log('saving images to ./output')

@@ -1,6 +1,7 @@
 const gp = require('geojson-precision')
 const geojsonTidy = require('@mapbox/geojson-tidy')
 const geojsonTools = require('geojson-tools')
+const simplifyGeojson = require('simplify-geojson')
 
 // take some feature, turn it into a coordinate array... 
 const toArray = (feature) => {
@@ -25,7 +26,7 @@ const toArray = (feature) => {
 }
 
 module.exports = (geographies, options) => {
-  const { decimalPrecision, ...tidyOptions } = options
+  const { decimalPrecision, ramerDouglasPeukerThreshold, ...tidyOptions } = options
 // const nestedGeos = response.data.policies.data.map(policy => 
 //   policy.rules.map(rule => rule.geographies.map(({geography_json, geography_id, ...rest}) => ({
 //         data: geography_json,
@@ -56,24 +57,24 @@ const results = [...geographies
     data: gp({...data}, decimalPrecision),
     ...rest
   })) // decimal precision, removes decimal precision from coordinates lat lngs, using "geojson-precision"
-  // .map(({data, ...rest}) => {
-  //   const coordinates = data.coordinates
+  .map(({data, ...rest}) => {
+    const coordinates = data.coordinates
     
-  //   const first = coordinates[0]
-  //   const last = coordinates[coordinates.length - 1]
+    const first = coordinates[0]
+    const last = coordinates[coordinates.length - 1]
 
-  //   if (first[0] != last[0] && first[1] != last[1]) { // polygons must wrap
-  //     coordinates.push(first)
-  //   }
+    if (first[0] != last[0] && first[1] != last[1]) { // polygons must wrap
+      coordinates.push(first)
+    }
 
-  //   return { 
-  //     data: {
-  //       ...data,
-  //       coordinates: coordinates
-  //     },
-  //     ...rest  
-  //   }
-  // }) // making sure all lines start and end at the same point, - should prob be moved until after tidy?
+    return { 
+      data: {
+        ...data,
+        coordinates: coordinates
+      },
+      ...rest  
+    }
+  }) // making sure all lines start and end at the same point, - should prob be moved until after tidy?
   .map(({data, ...rest}) => ({
     data: {
       type: "FeatureCollection",
@@ -87,6 +88,14 @@ const results = [...geographies
     },
     ...rest
   })) // formatting for "tidy"
+  .map(({data, ...rest}) => {
+    const reduced = simplifyGeojson(data, ramerDouglasPeukerThreshold)
+    // console.log('compare data to reduced', {dataLength: data.features[0].geometry.coordinates.length, reducedLength: reduced.features[0].geometry.coordinates.length})
+    return ({
+      data: reduced,
+      ...rest
+    })
+  })
   .map(({data, ...rest}) => ({
     data: geojsonTidy.tidy(data, tidyOptions),
     ...rest

@@ -24,6 +24,7 @@ export module '@lacuna/mapbox-static-url' {
     decimalPrecision: number;
     minimumDistance?: number;
     maximumPoints?: number;
+    ramerDouglasPeukerThreshold?: number; // default is 0.001 for a city block, 
   }
 
   declare const getStaticUrl = (geographies: Array<DrawableGeography>, options: GetStaticUrlOptions) => Array<string>
