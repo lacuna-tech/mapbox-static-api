@@ -1,6 +1,6 @@
 import fs from 'fs'
 import https from 'https'
-import getStaticUrl from '@lacuna/mapbox-static-test'
+import getStaticUrl from '@lacuna/mapbox-static-api'
 
 const saveImage = (fileName, url) => {
   const file = fs.createWriteStream(`./output/${fileName}.jpg`)

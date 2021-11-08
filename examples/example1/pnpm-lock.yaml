@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@lacuna/mapbox-static-test': file:../../.
+  '@lacuna/mapbox-static-api': file:../../.
 
 dependencies:
-  '@lacuna/mapbox-static-test': link:../..
+  '@lacuna/mapbox-static-api': link:../..
