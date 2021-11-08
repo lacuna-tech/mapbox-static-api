@@ -9,18 +9,34 @@ const saveImage = (fileName, url) => {
   })
 }
 
-const main = () => {
+const responseFiles = {
+  cityDev: 'response.json',
+  laProd: 'responseProd.json'
+}
 
+const main = (responseFile) => {
+  
+  // loading data
+  const response = JSON.parse(fs.readFileSync(`./input/${responseFile}`, {encoding: 'utf-8'}))
+  let policiesArr
+  if (responseFile === responseFiles.laProd) {
+    // production doesn't yet have pagination in responses
+    policiesArr = response.data.policies
+  } else {
+    // city dev does have pagination, requires another unwrapping of policies array form pagination response of policies
+    policiesArr = response.data.policies.data
+  }
+
+  // creating output dir if not available
   try {
     fs.accessSync('./output')
   } catch (e) {
     fs.mkdirSync('./output')
   }
 
-
+  // 
   const mapboxToken = 'pk.eyJ1IjoibGFjdW5hLW1hcGJveCIsImEiOiJjanBva3A0cjEwZXdkNDJydW91Ym82aGpyIn0.Qh-ak-vPBz7EL3ngRdNRZQ'
-  const response = JSON.parse(fs.readFileSync('./input/response.json', {encoding: 'utf-8'}))
-  const policies = response.data.policies.data.map(({rules, policy_id}) => ({
+  const policies = policiesArr.map(({rules, policy_id}) => ({
     policy_id, 
     geographies: [...rules.map(rule => rule.geographies).flat().reduce((acc, geo) => {
       acc.set(geo.geography_id, geo)
@@ -83,4 +99,5 @@ const main = () => {
 
   console.log('Done!')
 }
-main()
+
+main(responseFiles.cityDev)
