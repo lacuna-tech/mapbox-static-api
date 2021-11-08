@@ -4,41 +4,33 @@ const geojsonTools = require('geojson-tools')
 const simplifyGeojson = require('simplify-geojson')
 
 // take some feature, turn it into a coordinate array... 
+// return an array of arrays of coordinates, Array<Array<Coordinate>>
 const toArray = (feature) => {
   switch (feature.type) {
     case "FeatureCollection": 
-      return feature.features.map(toArray)
+      return [...feature.features.map(toArray)].flat()
     case "Feature":
       const { geometry } = feature
       switch (geometry?.type) {
-        case "Polygon":
-        case "LineString":
         case "Point":
-          return geojsonTools.toArray(geometry)
+          return [[geojsonTools.toArray(geometry)]]
+        case "Polygon":
+        case "LineString": 
+          return [geojsonTools.toArray(geometry)]
         case 'MultiPolygon':
-          return geojsonTools.toArray(geometry).flat()
+          return geojsonTools.toArray(geometry)
         default: // seing some geometry.type = "Multiline" geometry types in here, might need to double check
           console.error(`Unexpected geometry type ${geometry?.type}`, geometry)
           return geojsonTools.toArray(geometry)
       }
   }
-  throw new Error("not sure what type of thing this is", feature)
+  throw new Error(`Unexpected feature.type "${feature.type}"`, feature)
 }
 
 module.exports = (geographies, options) => {
   const { decimalPrecision, ramerDouglasPeukerThreshold, ...tidyOptions } = options
-// const nestedGeos = response.data.policies.data.map(policy => 
-//   policy.rules.map(rule => rule.geographies.map(({geography_json, geography_id, ...rest}) => ({
-//         data: geography_json,
-//         id: geography_id,
-//         ...rest
-//       })
-//     )
-//   )
-// )
-// const geographies = nestedGeos.flat(2) // all geographies nested in the policies
 
-const results = [...geographies
+  const results = [...geographies
     .reduce((acc, cur) => {
       acc.set(cur.geography_id, cur)
       return acc
@@ -49,8 +41,12 @@ const results = [...geographies
     data: toArray(geography_json), // [[lat,lng]] | [[[lat, lng]]]
     ...rest
   })) // turned wild geography_json GeoJSON into arrays of coordinates
+  .reduce((acc, {data, ...rest}) => {
+    acc.push(...data.map(coordinates => ({data: coordinates, ...rest})))
+    return acc
+  }, [])
   .map(({data, ...rest}) => ({
-    data: geojsonTools.toGeoJSON(data[0], 'linestring'), // only data[0]?  I need to double check this....
+    data: geojsonTools.toGeoJSON(data, 'linestring'), // only data[0]?  I need to double check this....
     ...rest
   })) // turned coordinate arrays into "linestring" features because "@mapbox/geojson-tidy" package needs LineStrings, and LineStrings are probably better for url params
   .map(({data, ...rest}) => ({
@@ -90,7 +86,7 @@ const results = [...geographies
   })) // formatting for "tidy"
   .map(({data, ...rest}) => {
     const reduced = simplifyGeojson(data, ramerDouglasPeukerThreshold)
-    // console.log('compare data to reduced', {dataLength: data.features[0].geometry.coordinates.length, reducedLength: reduced.features[0].geometry.coordinates.length})
+    console.log('compare data to reduced', {dataLength: data.features[0].geometry.coordinates.length, reducedLength: reduced.features[0].geometry.coordinates.length})
     return ({
       data: reduced,
       ...rest

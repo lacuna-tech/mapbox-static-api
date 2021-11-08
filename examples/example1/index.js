@@ -3,8 +3,13 @@ import https from 'https'
 import getStaticUrl from '@lacuna/mapbox-static-api'
 
 const saveImage = (fileName, url) => {
-  const file = fs.createWriteStream(`./output/${fileName}.jpg`)
-  https.get(url, (response) => {
+  const file = fs.createWriteStream(`./output/${fileName}.png`)
+  https.get(url, (response, error) => {
+    // const extension = response.headers['content-type'] === 'image/png' ? 'png' : 'json'
+    // if (extension === 'json') {
+    //   fs.writeFileSync(`./output/${fileName}.json`, response.body, {encoding: 'utf-8'})
+    //   return
+    // }
     response.pipe(file)
   })
 }
@@ -57,28 +62,38 @@ const main = (responseFile) => {
   const options = {
     decimalPrecision: 5,
     minimumDistance: 15,
-    ramerDouglasPeukerThreshold: 0.001,
+    ramerDouglasPeukerThreshold: 0.00025,
     mapboxToken
   }
 
-  const data = [
-    ...policies.map(({policy_id, geographies}) => {
+  // const data = [
+  //   ...policies.map(({policy_id, geographies}) => {
 
-      const TIME_TAG = `time policy ${policy_id}`
-      console.time(TIME_TAG)
-      const url = getStaticUrl(geographies, options)
-      console.timeEnd(TIME_TAG)
+  //     const TIME_TAG = `time policy ${policy_id}`
+  //     console.time(TIME_TAG)
+  //     const url = getStaticUrl(geographies, options)
+  //     console.timeEnd(TIME_TAG)
 
-      return {
-        fileName: `Policy_${policy_id}`,
-        url
-      }
-    }),
-    ...allGeographies.map(geography => ({
-      fileName: `Geography_${geography.geography_id}`, 
-      url: getStaticUrl([geography], options)
+  //     return {
+  //       fileName: `Policy_${policy_id}`,
+  //       url
+  //     }
+  //   }),
+  //   ...allGeographies.map(geography => ({
+  //     fileName: `Geography_${geography.geography_id}`, 
+  //     url: getStaticUrl([geography], options)
+  //   }))
+  // ]
+
+  // point has trouble: "6dc968c7-19f4-421c-b9d1-683dd3cdb632", it is a point and can't be represented as a LineString
+  // geography has trouble "0c444869-1674-4234-b4f3-ab5685bcf0d9" squiggly lines all over the place
+  const data = allGeographies
+    // .filter(geo => geo.geography_id === '6dc968c7-19f4-421c-b9d1-683dd3cdb632')
+    // .filter(({geography_id}) => geography_id === '0c444869-1674-4234-b4f3-ab5685bcf0d9')
+    .map(geo => ({
+      fileName: `Geography_${geo.geography_id}`, 
+      url: getStaticUrl([geo], options)
     }))
-  ]
 
 
   const staticUrlInfo = data.map(({fileName, url}) => ({
@@ -100,4 +115,4 @@ const main = (responseFile) => {
   console.log('Done!')
 }
 
-main(responseFiles.cityDev)
+main(responseFiles.laProd)
